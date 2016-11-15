@@ -81,13 +81,13 @@ CP_STRING+=$JAR_PREFIX:$JAR_PREFIX/*
 echo $CP_STRING
 
 #copy starting script
-cp dashboard.sh $DEST_DIR/bin/dashboard
+cp dashboard.sh $DEST_DIR/bin/dashboard.sh
 
 #set execution permissions
-chmod 766 $DEST_DIR/bin/dashboard
+chmod 766 $DEST_DIR/bin/dashboard.sh
 
 #change CLASSPATH
-sed -i "s|CLASSPATH=TOCHANGE|CLASSPATH=${CP_STRING}|" "$DEST_DIR/bin/dashboard"
+sed -i "s|CLASSPATH=TOCHANGE|CLASSPATH=${CP_STRING}|" "$DEST_DIR/bin/dashboard.sh"
 
 #copy manifest
 cp $MANIFEST_FILE $DEST_DIR/manifest.yml
