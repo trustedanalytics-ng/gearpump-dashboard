@@ -180,7 +180,7 @@ do
 done
 
 # change the port
-sed -i "s/8090/${PORT}/g" $APP_HOME/lib/gear.conf
+sed -i "s/8090/80/g" $APP_HOME/lib/gear.conf
 
 # enable authentication
 sed -i "s/authentication-enabled = false/authentication-enabled = true/" $APP_HOME/lib/gear.conf
