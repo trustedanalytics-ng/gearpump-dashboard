@@ -10,7 +10,7 @@
 ## to be present in the directory it's ran from.
 ##############################################################################
 ##
-## Copyright (c) 2016 Intel Corporsation
+## Copyright (c) 2016 Intel Corporation
 ##
 ## Licensed under the Apache License, Version 2.0 (the "License");
 ## you may not use this file except in compliance with the License.
@@ -43,13 +43,17 @@ fi
 
 mkdir $DEST_DIR/bin
 mkdir $DEST_DIR/lib
+mkdir $DEST_DIR/lib/daemon
+mkdir $DEST_DIR/lib/services
+mkdir $DEST_DIR/conf
+mkdir $DEST_DIR/dashboard
 
 # copy dependencies
-cp $GP_HOME/conf/* $DEST_DIR/lib
-cp -r $GP_HOME/dashboard/* $DEST_DIR/lib
+cp $GP_HOME/conf/* $DEST_DIR/conf
+cp -r $GP_HOME/dashboard/* $DEST_DIR/dashboard
 cp $GP_HOME/lib/* $DEST_DIR/lib
-cp $GP_HOME/lib/daemon/* $DEST_DIR/lib
-cp $GP_HOME/lib/services/* $DEST_DIR/lib
+cp $GP_HOME/lib/daemon/* $DEST_DIR/lib/daemon
+cp $GP_HOME/lib/services/* $DEST_DIR/lib/services
 cp $GP_HOME/VERSION $DEST_DIR/lib/
 cp $GP_HOME/VERSION $DEST_DIR/
 
@@ -64,20 +68,18 @@ rm -rf $TARGET_FOLDER
 mkdir -p $TARGET_FOLDER
 
 echo "Compiling tap-gearpump-dashboard classes"
-$JAVA_HOME/bin/javac -cp $DEST_DIR/lib/gearpump-services_2.11-0.8.0.jar:$DEST_DIR/lib/config-1.3.0.jar:$DEST_DIR/lib/scala-library-2.11.8.jar -d $TARGET_FOLDER $TAP_DASHBOARD_JAVA/$CUSTOM_AUTHENTICATOR_CLASS.java
+$JAVA_HOME/bin/javac -cp $DEST_DIR/lib/services/gearpump-services_2.11-0.8.0.jar:$DEST_DIR/lib/config-1.3.0.jar:$DEST_DIR/lib/scala-library-2.11.8.jar -d $TARGET_FOLDER $TAP_DASHBOARD_JAVA/$CUSTOM_AUTHENTICATOR_CLASS.java
 
 echo "Creating tap-gearpump-dashboard.jar file"
 jar cvf $DEST_DIR/lib/tap-gearpump-dashboard.jar -C $TARGET_FOLDER $CUSTOM_AUTHENTICATOR_CLASS.class
 
 # compute classpath
 CP_STRING=""
-JAR_PREFIX=\$APP_HOME/lib
+JAR_PREFIX=\$APP_HOME
 
-for filename in $DEST_DIR/lib/*.jar; do
-	CP_STRING+=$JAR_PREFIX/$(basename $filename):
-done
+CP_STRING+=$JAR_PREFIX/lib:$JAR_PREFIX/lib/*:$JAR_PREFIX/lib/services:$JAR_PREFIX/lib/services/*:$JAR_PREFIX/lib/daemon:$JAR_PREFIX/lib/daemon/*:
+CP_STRING+=$JAR_PREFIX/dashboard/:$JAR_PREFIX/dashboard/*:$JAR_PREFIX/conf/:$JAR_PREFIX/conf/*
 
-CP_STRING+=$JAR_PREFIX:$JAR_PREFIX/*
 echo $CP_STRING
 
 #copy starting script
@@ -95,4 +97,4 @@ cp $MANIFEST_FILE $DEST_DIR/manifest.yml
 cd $DEST_DIR/
 #make tar.gz in target directory
 mkdir target/
-tar -zcf target/gearpump-dashboard.tar.gz bin/ lib/ VERSION
+tar -zcf target/gearpump-dashboard.tar.gz bin/ lib/ conf/ dashboard/ VERSION
