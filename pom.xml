@@ -13,7 +13,6 @@
 
     <properties>
         <docker.imageName>${project.artifactId}</docker.imageName>
-        <docker.registry>tapimages.us.enableiot.com:8080</docker.registry>
         <docker.workdir>/opt/app</docker.workdir>
     </properties>
 
@@ -35,7 +34,7 @@
         <version>0.4.12</version>
         <configuration>
           <imageName>${docker.imageName}</imageName>
-          <baseImage>${docker.registry}/tap-base-java:java8-jessie</baseImage>
+          <baseImage>tapimages:8080/tap-base-java:java8-jessie</baseImage>
           <useConfigFile>true</useConfigFile>
           <env>
             <APP_ROOT>"/opt/app"</APP_ROOT>
