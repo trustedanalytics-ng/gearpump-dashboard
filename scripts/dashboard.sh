@@ -168,7 +168,7 @@ toReplace=("\"$DIGEST\""
            $UAA_CLIENT_ID
            $UAA_CLIENT_SECRET
            $UAA_HOST
-           "http://${USER_MANAGEMENT_SERVICE_HOST}:${USER_MANAGEMENT_SERVICE_PORT}/rest/orgs"
+           "${TAP_PROTOCOL}://${USER_MANAGEMENT_SERVICE_HOST}:${USER_MANAGEMENT_SERVICE_PORT}/rest/orgs"
            "${CALLBACK}/login/oauth2/cloudfoundryuaa/callback")
 
 i=0
